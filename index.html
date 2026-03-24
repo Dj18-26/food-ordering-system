@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodHub - Order Delicious Food Online</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>🍔 FoodHub</h1>
+            </div>
+            <nav class="nav">
+                <a href="#home">Home</a>
+                <a href="#menu">Menu</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <div class="cart-icon" onclick="toggleCart()">
+                🛒 Cart
+                <span class="cart-count" id="cartCount">0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h2>Delicious Food Delivered to Your Doorstep</h2>
+            <p>Order your favorite meals from the best restaurants in town</p>
+            <button class="btn-primary" onclick="document.getElementById('menu').scrollIntoView({behavior: 'smooth'})">
+                Order Now
+            </button>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="menu-section" id="menu">
+        <div class="container">
+            <h2 class="section-title">Our Menu</h2>
+            
+            <!-- Category Filter -->
+            <div class="category-filter">
+                <button class="filter-btn active" data-category="all">All</button>
+                <button class="filter-btn" data-category="burger">Burgers</button>
+                <button class="filter-btn" data-category="pizza">Pizza</button>
+                <button class="filter-btn" data-category="sushi">Sushi</button>
+                <button class="filter-btn" data-category="salad">Salads</button>
+                <button class="filter-btn" data-category="dessert">Desserts</button>
+            </div>
+
+            <!-- Menu Items Grid -->
+            <div class="menu-grid" id="menuGrid">
+                <!-- Items will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Shopping Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button class="close-cart" onclick="toggleCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be dynamically loaded here -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">$0.00</span>
+            </div>
+            <button class="btn-checkout" onclick="checkout()">Checkout</button>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal" id="checkoutModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeCheckout()">✕</span>
+            <h2>Checkout</h2>
+            <form id="checkoutForm" onsubmit="processOrder(event)">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required placeholder="john@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" required placeholder="+1 (555) 123-4567">
+                </div>
+                <div class="form-group">
+                    <label for="address">Delivery Address</label>
+                    <textarea id="address" required placeholder="Enter your full address"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="payment">Payment Method</label>
+                    <select id="payment" required>
+                        <option value="">Select Payment Method</option>
+                        <option value="card">Credit/Debit Card</option>
+                        <option value="cash">Cash on Delivery</option>
+                        <option value="paypal">PayPal</option>
+                    </select>
+                </div>
+                <div class="order-summary">
+                    <h3>Order Summary</h3>
+                    <div id="orderSummary"></div>
+                </div>
+                <button type="submit" class="btn-submit">Place Order</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content success-content">
+            <h2>✓ Order Placed Successfully!</h2>
+            <p>Thank you for your order. Your delicious food is being prepared!</p>
+            <p class="order-number">Order #<span id="orderNumber"></span></p>
+            <button class="btn-primary" onclick="closeSuccessModal()">Continue Shopping</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>🍔 FoodHub</h3>
+                    <p>Delicious food delivered to your doorstep</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <p>📞 +1 (555) 123-4567</p>
+                    <p>📧 info@foodhub.com</p>
+                    <p>📍 123 Food Street, NY</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#">Facebook</a>
+                        <a href="#">Instagram</a>
+                        <a href="#">Twitter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 FoodHub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
