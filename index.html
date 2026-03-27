@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodHub - Order Delicious Food Online</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>🍔 FoodHub</h1>
+            </div>
+            <nav class="nav">
+                <a href="#home">Home</a>
+                <a href="#menu">Menu</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <div class="cart-icon" onclick="toggleCart()">
+                🛒 Cart
+                <span class="cart-count" id="cartCount">0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h2>Delicious Food Delivered to Your Doorstep</h2>
+            <p>Order your favorite meals from the best restaurants in town</p>
+            <button class="btn-primary" onclick="document.getElementById('menu').scrollIntoView({behavior: 'smooth'})">
+                Order Now
+            </button>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="menu-section" id="menu">
+        <div class="container">
+            <h2 class="section-title">Our Menu</h2>
+            
+            <!-- Category Filter -->
+            <div class="category-filter">
+                <button class="filter-btn active" data-category="all">All</button>
+                <button class="filter-btn" data-category="burger">Burgers</button>
+                <button class="filter-btn" data-category="pizza">Pizza</button>
+                <button class="filter-btn" data-category="sushi">Sushi</button>
+                <button class="filter-btn" data-category="salad">Salads</button>
+                <button class="filter-btn" data-category="dessert">Desserts</button>
+            </div>
+
+            <!-- Menu Items Grid -->
+            <div class="menu-grid" id="menuGrid">
+                <!-- Items will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Shopping Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button class="close-cart" onclick="toggleCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be dynamically loaded here -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">$0.00</span>
+            </div>
+            <button class="btn-checkout" onclick="checkout()">Checkout</button>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal" id="checkoutModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeCheckout()">✕</span>
+            <h2>Checkout</h2>
+            <form id="checkoutForm" onsubmit="processOrder(event)">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required placeholder="john@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" required placeholder="+1 (555) 123-4567">
+                </div>
+                <div class="form-group">
+                    <label for="address">Delivery Address</label>
+                    <textarea id="address" required placeholder="Enter your full address"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="payment">Payment Method</label>
+                    <select id="payment" required onchange="handlePaymentMethodChange()">
+                        <option value="">Select Payment Method</option>
+                        <option value="card">Credit/Debit Card</option>
+                        <option value="razorpay">Razorpay (UPI/Card)</option>
+                        <option value="paytm">PayTM Wallet</option>
+                        <option value="gpay">Google Pay</option>
+                        <option value="phonepe">PhonePe</option>
+                        <option value="cash">Cash on Delivery</option>
+                    </select>
+                </div>
+                <div class="order-summary">
+                    <h3>Order Summary</h3>
+                    <div id="orderSummary"></div>
+                    <div id="paymentDetails" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 2px solid #ff6b35;">
+                        <h4 style="color: #ff6b35; margin-bottom: 10px;">Payment Details</h4>
+                        <div id="transactionInfo"></div>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit" id="placeOrderBtn">Place Order</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content success-content">
+            <h2>✓ Order Placed Successfully!</h2>
+            <p>Thank you for your order. Your delicious food is being prepared!</p>
+            <p class="order-number">Order #<span id="orderNumber"></span></p>
+            <div class="download-receipt" style="margin: 20px 0;">
+                <button class="btn-primary" onclick="downloadReceipt()" style="background: #28a745;">
+                    📄 Download Receipt (PDF)
+                </button>
+            </div>
+            <button class="btn-primary" onclick="closeSuccessModal()">Continue Shopping</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>🍔 FoodHub</h3>
+                    <p>Delicious food delivered to your doorstep</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <p>📞 +91 9172121002</p>
+                    <p>📧 DJFoodHub@gmail.com</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#">Facebook</a>
+                        <a href="#">Instagram</a>
+                        <a href="#">Twitter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 FoodHub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Contact & Location Section -->
+    <section class="contact-location-section">
+        <div class="container">
+            <h2 class="section-title">Visit Us at Phoenix Mall, Pune</h2>
+            <div class="contact-grid">
+                <!-- Left Side: Map -->
+                <div class="map-container">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3785.340896207379!2d73.88512931489652!3d18.551396972596825!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2c0a6bb8a5b5b%3A0x8a7b8e8e8e8e8e8e!2sPhoenix%20Mall%20Pune!5e0!3m2!1sen!2sin!4v1234567890" 
+                        width="100%" 
+                        height="500" 
+                        style="border:0; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.15);" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="Phoenix Mall Pune Location">
+                    </iframe>
+                </div>
+                
+                <!-- Right Side: Contact Details -->
+                <div class="contact-details">
+                    <div class="contact-card">
+                        <h3>📍 Our Location</h3>
+                        <div class="location-info">
+                            <div class="info-item">
+                                <span class="icon">🏢</span>
+                                <div>
+                                    <strong>Phoenix Mall</strong>
+                                    <p>MG Road, Kalyani Nagar</p>
+                                    <p>Pune, Maharashtra 411001</p>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <span class="icon">📞</span>
+                                <div>
+                                    <strong>Phone</strong>
+                                    <p>+91 9172121002</p>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <span class="icon">📧</span>
+                                <div>
+                                    <strong>Email</strong>
+                                    <p>DJFoodHub@gmail.com</p>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <span class="icon">⏰</span>
+                                <div>
+                                    <strong>Opening Hours</strong>
+                                    <p>Mon - Sun: 10:00 AM - 10:00 PM</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="map-actions">
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=Phoenix+Mall+Pune" target="_blank" class="btn-directions">
+                                🧭 Get Directions
+                            </a>
+                            <a href="tel:+91 9172121002" class="btn-call">
+                                📞 Call Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="receipt-generator.js"></script>
+    <script src="payment-gateway.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
